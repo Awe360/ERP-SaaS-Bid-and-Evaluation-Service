@@ -1,0 +1,40 @@
+server:
+  port: 9190
+
+spring:
+  application:
+    name: project-delivery-service
+  config:
+    import: configserver:${CONFIG_SERVER_BASE_URL:http://config.172.20.136.101.sslip.io}
+
+  jpa :
+    hibernate :
+      ddl-auto : update
+    show-sql : true
+    properties :
+      hibernate :
+        format_sql : true
+
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/project_delivery_db}?createDatabaseIfNotExist=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:7012}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  servlet :
+    multipart :
+      enabled : true
+      file-size-threshold : 2KB
+      max-file-size : 10MB
+      max-request-size : 10MB
+
+rabbitmq:
+  exchange: project-delivery-exchange
+  change-project-status-queue: change-project-status-queue
+  change-activity-status-queue: change-activity-status-queue
+  release-resource-queue: release-resource-queue
+  create-resource-queue: create-project-delivery-resource-queue
+  delete-resource-queue: delete-project-delivery-resource-queue
+  change-resource-status-queue: change-project-delivery-resource-status-queue
+
+api-gateway-base-url: http://gateway.172.20.136.101.sslip.io
